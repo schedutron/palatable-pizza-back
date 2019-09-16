@@ -17,6 +17,7 @@ class CreateOrdersTable extends Migration
             $table->increments('id');
             $table->float('total', 8, 2);
             $table->timestamp('created_at')->useCurrent();
+            $table->boolean('completed')->default(false);
         });
     }
 
