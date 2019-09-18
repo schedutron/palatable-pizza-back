@@ -3,8 +3,9 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use \App\Choice;
 
-class User extends JsonResource
+class Order extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -14,12 +15,11 @@ class User extends JsonResource
      */
     public function toArray($request)
     {
+        //$items = Choice::where('order_id', $this->id)->;
         return [
             'id' => $this->id,
-            'display_name' => $this->display_name,
-            'email' => $this->email,
-            'address' => $this->address,
-            'phone_number' => (int) $this->phone_number,
+            'items' => $this->cart->cartItems,
+            'total' => $this->total,
           ];
     }
 }
