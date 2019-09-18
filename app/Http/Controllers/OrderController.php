@@ -5,17 +5,16 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use \App\Order;
 use \App\Choice;
+use \App\User;
 
 class OrderController extends Controller
 {
   public function store(Request $request) {
-    //$order = Order::create($request->all());
-    //var_dump($request);
     $payload = $request->all();
     $cart = $payload["cart"];
-    $user_id = $payload["userID"];
+    $user = $payload["user"];
 
-    $order_id = $payload["orderID"];
+    $order_id = $cart["orderID"];
     if (is_null($order_id)) {
       $order = Order::create(['total' => $cart["cartTotal"]]);
       $order_id = $order->id;
@@ -26,10 +25,13 @@ class OrderController extends Controller
     Choice::where('order_id', $order_id)->delete();
     foreach ($cart['cartItems'] as $item) {
       Choice::insert(
-        ['user_id' => $user_id, 'order_id' => $order_id, 'pizza_id' => $item['id'], 'quantity' => $item['quantity']]
+        ['user_id' => $user["id"], 'order_id' => $order_id, 'pizza_id' => $item['id'], 'quantity' => $item['quantity']]
       );
     }
-    $payload["orderID"] = $order_id;
+
+    User::where('id', $user["id"])->update(["address" => $user["address"], "phone_number" => (int) $user["phone_number"]]);
+
+    $payload["cart"]["orderID"] = $order_id;
     return $payload;
-  } 
+  }
 }
