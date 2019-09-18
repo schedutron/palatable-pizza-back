@@ -25,3 +25,4 @@ Route::patch('/users/{id}', 'UserController@update');
 
 Route::get('/orders/{id}', 'OrderController@show');
 Route::post('/orders', 'OrderController@store');
+Route::post('/payment-success', 'OrderController@payment_success');

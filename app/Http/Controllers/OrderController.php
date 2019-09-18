@@ -7,8 +7,7 @@ use \App\Order;
 use \App\Choice;
 use \App\User;
 
-class OrderController extends Controller
-{
+class OrderController extends Controller {
   public function store(Request $request) {
     $payload = $request->all();
     $cart = $payload["cart"];
@@ -33,5 +32,12 @@ class OrderController extends Controller
 
     $payload["cart"]["orderID"] = $order_id;
     return $payload;
+  }
+
+  public function payment_success(Request $request) {
+    $payload = $request->all();
+    // check and record payment
+    Order::where('id', $payload["orderID"])->update(['completed' => true, 'stripe_token' => $payload["stripeToken"]]);
+    return ['message' => 'Payment Successful! The order has reached our kitchens!'];
   }
 }
