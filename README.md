@@ -4,3 +4,5 @@ This is the backend code for a pizza ordering website (see the React frontend so
 
 ## Database Schema
 ![Database Schema](/PizzaERD.png)
+
+I had to use a synthetic primary key for the `choices` table because Laravel has weak support for composite primary keys (otherwise they key would have been `(user_id, pizza_id, order_id)`.
